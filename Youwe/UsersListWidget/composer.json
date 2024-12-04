@@ -1,0 +1,22 @@
+{
+    "name": "youwe/module-userslistwidget`",
+    "description": "Youwe api fetch test module",
+    "type": "magento2-module",
+    "license": "GNU",
+    "authors": [
+        {
+            "name": "Aleksandar Milicevic",
+            "email": "alex@alexmilicevic.me"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Youwe\\UsersListWidget\\": ""
+        }
+    }
+}

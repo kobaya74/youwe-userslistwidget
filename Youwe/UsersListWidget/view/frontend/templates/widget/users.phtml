@@ -1,0 +1,33 @@
+<?php
+/**
+ * @var Escaper $escaper
+ * @var Template $block
+ */
+
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+
+$helper = $this->helper('Youwe\UsersListWidget\Helper\Data');
+$apiUrlConfig = $helper->getApiUrl();
+$apiUrlWidget = $block->getData('api_url');
+$isEnabled = $helper->isEnabled();
+$apiUrl = $apiUrlWidget ?? $apiUrlConfig;
+?>
+
+<?php if($apiUrl && $isEnabled): ?>
+    <div class="api-fetch-block">
+        <h3 class="widget-title"><?= $escaper->escapeHtml($block->getData('title')) ?></h3>
+        <button id="fetch-users"><?= $escaper->escapeHtml(__('Users list')); ?></button>
+        <ul class="users"></ul>
+    </div>
+<?php endif; ?>
+
+<script type="text/x-magento-init">
+    {
+        ".api-fetch-block": {
+            "createUserList": {
+                "apiUrl": <?= json_encode($apiUrl) ?>
+            }
+        }
+    }
+</script>

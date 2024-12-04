@@ -1,0 +1,55 @@
+// Media common for all screens
+& when (@media-common = true) {
+    .api-fetch-block {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        .users {
+            list-style: none;
+            margin: 2rem 0 0;
+            padding: 1rem 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            .user {
+                display: block;
+                margin: 0 1rem 2rem 1rem;
+                flex-basis: 13rem;
+                .lib-css(box-shadow, 0 0 5px @user-border-color);
+                border-radius: 1rem;
+                padding: 1rem;
+                .lib-css(transition, box-shadow 0.5s);
+                &:hover {
+                    .lib-css(box-shadow, 0 0 8px );
+                    .avatar {
+                        .lib-css(transform, scale(1.05));
+                    }
+                }
+            }
+        }
+        .avatar {
+            border-radius: 1rem;
+            display: block;
+            margin: 0 auto 1rem;
+            .lib-css(transition, transform 0.5s);
+            max-width: 13rem;
+        }
+        .mail {
+            color: @mail-text-color;
+        }
+        .name {
+            font-weight: @font-weight__semibold;
+            color: @name-text-color;
+        }
+        .widget-title {
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            .lib-font-size(26);
+        }
+        #fetch-users {
+            .lib-button-l();
+            .lib-font-size(22);
+        }
+    }
+}
