@@ -8,7 +8,7 @@
 
 
 ## Main Functionalities
-Youwe UserListWidget
+Youwe UserListWidget is a Magento 2 widget.
 
 ## Installation
 \* = in production please use the `--keep-generated` option
