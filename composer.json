@@ -1,8 +1,16 @@
 {
     "name": "youwe/module-userslistwidget`",
-    "description": "Youwe api fetch test module",
+    "description": "User list from API",
+        "require": {
+        "php": "~7.0.0|~8.0.0",
+        "magento/framework": "100.0.*",
+        "magento/magento-composer-installer": "100.0.*"
+    },
     "type": "magento2-module",
-    "license": "GNU",
+        "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
     "authors": [
         {
             "name": "Aleksandar Milicevic",
