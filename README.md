@@ -16,7 +16,8 @@ Youwe UserListWidget
 ### Type 1: Zip file
 
  - Unzip the zip file somewhere on local machine.
- - Copy folder "Youwe" in `app/code/`.
+ - Create folder"Youwe/UsersListWidget" in the `app/code/`.
+ - Copy files into newly created folder.
  - Enable the module by running `php bin/magento module:enable Youwe_UsersListWidget`
  - Apply database updates by running `php bin/magento setup:upgrade`\*
  - Flush the cache by running `php bin/magento cache:flush`
