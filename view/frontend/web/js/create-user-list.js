@@ -5,25 +5,30 @@ define(['jquery', 'mage/translate'], function ($) {
         const { apiUrl } = config;
         const emailText = $.mage.__('Send me an email');
 
-        const handleApi = () => {
-            fetch(apiUrl)
-                .then(response => response.json())
-                .then(result => {
-                    result.data.forEach(function (user) {
-                        const { avatar, first_name, last_name, email } = user;
+        async function handleApi() {
+            try {
+                const response = await fetch(apiUrl);
+                const result = await response.json();
+                const usersFragment = document.createDocumentFragment();
 
-                        const userEl = Object.assign(document.createElement(`li`), {
-                            innerHTML: `
-                                  <img class="avatar" src="${avatar}" alt="${first_name}_${last_name}"/>
-                                  <div class="name"> ${first_name} ${last_name}</div>
-                                  <a href="mailto:${email}" class="mail">${emailText}</a>`,
-                            classList: [`user`],
-                        });
+                for (const user of result.data) {
+                    const { avatar, first_name, last_name, email } = user;
 
-                        document.querySelector('.users').appendChild(userEl);
-                    });
-                });
-        };
+                    const userEl = document.createElement(`li`);
+                    userEl.classList.add('user');
+                    userEl.innerHTML = `
+                        <img class="avatar" src="${avatar}" alt="${first_name}_${last_name}"/>
+                        <div class="name"> ${first_name} ${last_name}</div>
+                        <a href="mailto:${email}" class="mail">${emailText}</a>`;
+
+                    usersFragment.appendChild(userEl);
+                }
+
+                document.querySelector('.users').appendChild(usersFragment);
+            } catch (error) {
+                return Promise.reject(new Error(`Error fetching users: ${error}`));
+            }
+        }
 
         document.querySelector('#fetch-users').addEventListener('click', handleApi);
     };
