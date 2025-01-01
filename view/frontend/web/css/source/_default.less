@@ -4,6 +4,7 @@
         align-items: center;
         display: flex;
         flex-flow: column;
+
         .users {
             display: flex;
             flex-wrap: wrap;
@@ -12,6 +13,7 @@
             margin: 2rem 0 0;
             padding: 1rem 0;
             width: 100%;
+
             .user {
                 .lib-css(box-shadow, 0 0 5px @user-border-color);
                 .lib-css(transition, box-shadow 0.5s);
@@ -28,6 +30,7 @@
                 }
             }
         }
+
         .avatar {
             .lib-css(transition, transform 0.5s);
             border-radius: 1rem;
@@ -35,18 +38,22 @@
             margin: 0 auto 1rem;
             max-width: 13rem;
         }
+
         .mail {
             color: @mail-text-color;
         }
+
         .name {
             color: @name-text-color;
             font-weight: @font-weight__semibold;
         }
+
         .widget-title {
             .lib-font-size(26);
             margin-bottom: 2rem;
             text-transform: uppercase;
         }
+
         #fetch-users {
             .lib-button-l();
             .lib-font-size(22);
