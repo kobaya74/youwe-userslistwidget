@@ -57,8 +57,8 @@ define(['jquery', 'mage/translate'], function ($) {
             } catch (error) {
                 console.error(`Error fetching users: ${error}`);
             } finally {
-                // Hide the loader
-                loader.style.display = 'none';
+                // Remove the loader
+                loader.remove();
             }
         }
 
