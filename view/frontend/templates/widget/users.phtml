@@ -17,7 +17,9 @@ $apiUrl = $apiUrlWidget ?? $apiUrlConfig;
 <?php if($apiUrl && $isEnabled): ?>
     <div class="api-fetch-block">
         <h3 class="widget-title"><?= $escaper->escapeHtml($block->getData('title')) ?></h3>
-        <button id="fetch-users"><?= $escaper->escapeHtml(__('Users list')); ?></button>
+        <button id="fetch-users" class="action submit primary">
+            <?= $escaper->escapeHtml(__('Add users list')); ?>
+        </button>
         <ul class="users"></ul>
     </div>
 <?php endif; ?>

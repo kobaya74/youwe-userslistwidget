@@ -5,28 +5,47 @@ define(['jquery', 'mage/translate'], function ($) {
         const { apiUrl } = config;
         const emailText = $.mage.__('Send me an email');
 
+        // Track if users have already been fetched and added
+        let usersFetched = false;
+
         async function handleApi() {
+            if (usersFetched) {
+                console.warn('Users have already been added!');
+                return;
+            }
+
             try {
                 const response = await fetch(apiUrl);
                 const result = await response.json();
-                const usersFragment = document.createDocumentFragment();
+                const users = result.data;
 
-                for (const user of result.data) {
-                    const { avatar, first_name, last_name, email } = user;
+                if (users.length) {
+                    const usersFragment = document.createDocumentFragment();
 
-                    const userEl = document.createElement(`li`);
-                    userEl.classList.add('user');
-                    userEl.innerHTML = `
+                    for (const user of users) {
+                        const { avatar, first_name, last_name, email } = user;
+
+                        const userEl = document.createElement(`li`);
+                        userEl.classList.add('user');
+                        userEl.innerHTML = `
                         <img class="avatar" src="${avatar}" alt="${first_name}_${last_name}"/>
                         <div class="name"> ${first_name} ${last_name}</div>
                         <a href="mailto:${email}" class="mail">${emailText}</a>`;
 
-                    usersFragment.appendChild(userEl);
+                        usersFragment.appendChild(userEl);
+                    }
+
+                    document.querySelector('.users').appendChild(usersFragment);
+
+                    // Mark users as fetched
+                    usersFetched = true;
+
+                    // Optionally disable the button
+                    document.querySelector('#fetch-users').disabled = true;
                 }
 
-                document.querySelector('.users').appendChild(usersFragment);
             } catch (error) {
-                return Promise.reject(new Error(`Error fetching users: ${error}`));
+                console.error(`Error fetching users: ${error}`);
             }
         }
 
