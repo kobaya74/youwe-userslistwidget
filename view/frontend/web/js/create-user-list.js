@@ -8,23 +8,19 @@ define(['jquery', 'mage/translate'], function ($) {
         // Track if users have already been fetched and added
         let usersFetched = false;
 
-        // Create a loader element
-        const loader = document.createElement('div');
-        loader.classList.add('loader');
-        loader.style.display = 'none'; // Initially hidden
-        loader.textContent = $.mage.__('Loading...');
-        document.querySelector('.users').appendChild(loader);
-
         async function handleApi() {
+            // Create a loader element
+            const loader = document.createElement('div');
+            loader.classList.add('loader');
+            loader.textContent = $.mage.__('Loading...');
+            document.querySelector('.users').appendChild(loader);
+
             if (usersFetched) {
                 console.warn('Users have already been added!');
                 return;
             }
 
             try {
-                // Show the loader
-                loader.style.display = 'block';
-
                 const response = await fetch(apiUrl);
                 const result = await response.json();
                 const users = result.data;
