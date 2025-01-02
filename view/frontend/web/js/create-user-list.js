@@ -2,8 +2,10 @@ define(['jquery', 'mage/translate'], function ($) {
     'use strict';
 
     return function (config, element) {
-        const { apiUrl } = config;
+        const { apiUrl, userList, submitButton } = config;
         const emailText = $.mage.__('Send me an email');
+        const userListEl = document.querySelector(userList);
+        const submitButtonEl = document.querySelector(submitButton);
 
         // Track if users have already been fetched and added
         let usersFetched = false;
@@ -12,12 +14,13 @@ define(['jquery', 'mage/translate'], function ($) {
             // Create a loader element
             const loader = document.createElement('div');
             loader.classList.add('loader');
-            loader.textContent = $.mage.__('Loading...');
-            document.querySelector('.users').appendChild(loader);
+            loader.innerHTML = '<div class="spinner"></div>';
+
+            userListEl.appendChild(loader);
 
             if (usersFetched) {
-                console.warn('Users have already been added!');
-                return;
+                loader.remove();
+                throw new Error('Users have already been added!');
             }
 
             try {
@@ -41,23 +44,23 @@ define(['jquery', 'mage/translate'], function ($) {
                         usersFragment.appendChild(userEl);
                     }
 
-                    document.querySelector('.users').appendChild(usersFragment);
+                    userListEl.appendChild(usersFragment);
 
                     // Mark users as fetched
                     usersFetched = true;
 
-                    // Optionally disable the button
-                    document.querySelector('#fetch-users').disabled = true;
+                    // Disable the submit button
+                    submitButtonEl.disabled = true;
                 }
 
             } catch (error) {
-                console.error(`Error fetching users: ${error}`);
+                throw new Error(`Error fetching users: ${error}`);
             } finally {
                 // Remove the loader
                 loader.remove();
             }
         }
 
-        document.querySelector('#fetch-users').addEventListener('click', handleApi);
+        submitButtonEl.addEventListener('click', handleApi);
     };
 });

@@ -17,7 +17,7 @@ $apiUrl = $apiUrlWidget ?? $apiUrlConfig;
 <?php if($apiUrl && $isEnabled): ?>
     <div class="api-fetch-block">
         <h3 class="widget-title"><?= $escaper->escapeHtml($block->getData('title')) ?></h3>
-        <button id="fetch-users" class="action submit primary">
+        <button class="action submit primary js-fetch-users">
             <?= $escaper->escapeHtml(__('Add users list')); ?>
         </button>
         <ul class="users"></ul>
@@ -28,7 +28,9 @@ $apiUrl = $apiUrlWidget ?? $apiUrlConfig;
     {
         ".api-fetch-block": {
             "createUserList": {
-                "apiUrl": <?= json_encode($apiUrl) ?>
+                "apiUrl": <?= json_encode($apiUrl) ?>,
+                "userList": <?= json_encode('.users') ?>,
+                "submitButton": <?= json_encode('.js-fetch-users') ?>
             }
         }
     }
