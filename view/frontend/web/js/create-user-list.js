@@ -4,9 +4,10 @@ define(['jquery', 'mage/translate'], function ($) {
     return function (config) {
         /* eslint one-var: ["error", { var: "never" }] */
 
-        /** Fetch API and create the user list from the request */
+        /** UserList Class */
         class UserList {
             /**
+             * Constructor to initialize configurations
              * @param {Object} configImport - imported config from PHTML file
              */
             constructor(configImport) {
@@ -21,89 +22,116 @@ define(['jquery', 'mage/translate'], function ($) {
                 this.usersFetched = false;
             }
 
+            /** Main initialization entry point */
             init() {
-                this.eventListener('click');
+                this.addButtonClickListener();
+            }
+
+            /** Adds an event listener to the button */
+            addButtonClickListener() {
+                this.submitButtonEl.addEventListener('click', () => this.onSubmitButtonClick());
+            }
+
+            /** Handles the submit button click */
+            async onSubmitButtonClick() {
+                if (this.usersFetched) {
+                    alert($.mage.__('Users have already been added!'));
+                    return;
+                }
+                await this.fetchAndRenderUsers();
+            }
+
+            /** Creates a loader and attaches it to the DOM */
+            showLoader() {
+                const loader = document.createElement('div');
+                loader.classList.add('loader');
+                loader.innerHTML = '<div class="spinner"></div>';
+                this.userListEl.appendChild(loader);
+                return loader;
             }
 
             /**
-             * @param {String} listenerType - type of the event listener
+             * Hides the loader element
+             * @param {HTMLElement} loader - loader element to remove
              */
-            eventListener(listenerType) {
-                const handleButton = () => this.handleApi();
+            hideLoader(loader) {
+                if (loader && loader.remove) {
+                    loader.remove();
+                }
+            }
 
-                this.submitButtonEl.addEventListener(
-                    listenerType,
-                    handleButton
-                );
+            /** Handles API call and rendering */
+            async fetchAndRenderUsers() {
+                const loader = this.showLoader();
+
+                try {
+                    const users = await this.fetchUsers();
+                    if (users.length) {
+                        this.renderUserList(users);
+                    }
+                } catch (error) {
+                    throw new Error($.mage.__(`Error fetching users: ${error.message}`));
+                } finally {
+                    this.hideLoader(loader);
+                }
             }
 
             /**
-             * @param {Object[]} users - array of fetched users objects
+             * Fetches user data from the API
+             * @returns {Promise<Object[]>} - array of user objects
+             */
+            async fetchUsers() {
+                const response = await fetch(this.apiUrl);
+                if (!response.ok) {
+                    throw new Error(`API responded with status ${response.status}`);
+                }
+                const result = await response.json();
+                return result.data || [];
+            }
+
+            /**
+             * Renders the user list on the page
+             * @param {Object[]} users - array of fetched user objects
              */
             renderUserList(users) {
                 const usersFragment = document.createDocumentFragment();
 
-                for (const user of users) {
-                    const {
-                        avatar,
-                        first_name: firstName,
-                        last_name: lastName,
-                        email
-                    } = user;
-
-                    const userEl = document.createElement('li');
-
-                    userEl.classList.add('user');
-                    userEl.innerHTML = `
-                            <img class="avatar" src="${avatar}" alt="${firstName}_${lastName}"/>
-                            <div class="name"> ${firstName} ${lastName}</div>
-                            <a href="mailto:${email}" class="mail">${this.emailText}</a>`;
-
+                users.forEach((user) => {
+                    const userEl = this.createUserElement(user);
                     usersFragment.appendChild(userEl);
-                }
+                });
 
                 this.userListEl.appendChild(usersFragment);
-
-                // Mark users as fetched
-                this.usersFetched = true;
-
-                // Disable the submit button
-                this.submitButtonEl.disabled = true;
+                this.disableSubmitButton();
             }
 
-            async handleApi() {
-                // Create a loader element
-                const loader = document.createElement('div');
+            /**
+             * Creates a user list element
+             * @param {Object} user - user object containing details
+             * @returns {HTMLElement} - formatted user list item
+             */
+            createUserElement(user) {
+                const { avatar, first_name: firstName, last_name: lastName, email } = user;
 
-                loader.classList.add('loader');
-                loader.innerHTML = '<div class="spinner"></div>';
+                const userEl = document.createElement('li');
+                userEl.classList.add('user');
+                userEl.innerHTML = `
+                    <img class="avatar" src="${avatar}" alt="${firstName}_${lastName}"/>
+                    <div class="name">${firstName} ${lastName}</div>
+                    <a href="mailto:${email}" class="mail">${this.emailText}</a>
+                `;
+                return userEl;
+            }
 
-                this.userListEl.appendChild(loader);
-
-                if (this.usersFetched) {
-                    loader.remove();
-                    throw new Error('Users have already been added!');
-                }
-
-                try {
-                    const response = await fetch(this.apiUrl);
-                    const result = await response.json();
-                    const users = result.data;
-
-                    if (users?.length) {
-                        this.renderUserList(users);
-                    }
-                } catch (error) {
-                    throw new Error(`Error fetching users: ${error}`);
-                } finally {
-                    // Remove the loader
-                    loader.remove();
-                }
+            /** Disables the submit button after fetching users */
+            disableSubmitButton() {
+                this.submitButtonEl.disabled = true;
+                this.usersFetched = true;
             }
         }
 
+        // Create and initialize the user list
         const userList = new UserList(config);
-
         userList.init();
     };
 });
