@@ -100,6 +100,7 @@ define(['jquery', 'mage/translate'], function($) {
 
                 users.forEach((user) => {
                     const userEl = this.createUserElement(user);
+                    
                     usersFragment.appendChild(userEl);
                 });
 
