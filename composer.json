@@ -1,5 +1,5 @@
 {
-    "name": "youwe/module-userslistwidget`",
+    "name": "youwe/module-userslistwidget",
     "description": "User list from API",
     "require": {
         "php": "~7.0.0|~8.0.0",
