@@ -1,7 +1,7 @@
-define(['jquery', 'mage/translate'], function ($) {
+define(['jquery', 'mage/translate'], function($) {
     'use strict';
 
-    return function (config) {
+    return function(config) {
         /* eslint one-var: ["error", { var: "never" }] */
 
         /** UserList Class */
@@ -44,6 +44,7 @@ define(['jquery', 'mage/translate'], function ($) {
             /** Creates a loader and attaches it to the DOM */
             showLoader() {
                 const loader = document.createElement('div');
+
                 loader.classList.add('loader');
                 loader.innerHTML = '<div class="spinner"></div>';
                 this.userListEl.appendChild(loader);
@@ -82,6 +83,7 @@ define(['jquery', 'mage/translate'], function ($) {
              */
             async fetchUsers() {
                 const response = await fetch(this.apiUrl);
+
                 if (!response.ok) {
                     throw new Error(`API responded with status ${response.status}`);
                 }
@@ -112,8 +114,8 @@ define(['jquery', 'mage/translate'], function ($) {
              */
             createUserElement(user) {
                 const { avatar, first_name: firstName, last_name: lastName, email } = user;
-
                 const userEl = document.createElement('li');
+
                 userEl.classList.add('user');
                 userEl.innerHTML = `
                     <img class="avatar" src="${avatar}" alt="${firstName}_${lastName}"/>
@@ -132,6 +134,7 @@ define(['jquery', 'mage/translate'], function ($) {
 
         // Create and initialize the user list
         const userList = new UserList(config);
+
         userList.init();
     };
 });
