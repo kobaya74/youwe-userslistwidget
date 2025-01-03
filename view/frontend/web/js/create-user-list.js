@@ -35,8 +35,7 @@ define(['jquery', 'mage/translate'], function($) {
             /** Handles the submit button click */
             async onSubmitButtonClick() {
                 if (this.usersFetched) {
-                    alert($.mage.__('Users have already been added!'));
-                    return;
+                    throw new Error(($.mage.__('Users have already been added!'));
                 }
                 await this.fetchAndRenderUsers();
             }
@@ -100,7 +99,7 @@ define(['jquery', 'mage/translate'], function($) {
 
                 users.forEach((user) => {
                     const userEl = this.createUserElement(user);
-                    
+
                     usersFragment.appendChild(userEl);
                 });
 
