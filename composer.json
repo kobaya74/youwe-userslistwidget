@@ -2,7 +2,7 @@
     "name": "alex74/module-userslistwidget",
     "description": "User list from API",
     "require": {
-        "php": "~7.0.0|~8.0.0",
+        "php": "^7.4 || ^8.1 || ^8.2 || ^8.3",
         "magento/framework": "100.0.*",
         "magento/magento-composer-installer": "100.0.*"
     },
