@@ -1,7 +1,7 @@
-define(['jquery', 'mage/translate'], function($) {
+define(['jquery', 'mage/translate'], function ($) {
     'use strict';
 
-    return function(config) {
+    return function (config) {
         /* eslint one-var: ["error", { var: "never" }] */
 
         /** UserList Class */
@@ -29,7 +29,9 @@ define(['jquery', 'mage/translate'], function($) {
 
             /** Adds an event listener to the button */
             addButtonClickListener() {
-                this.submitButtonEl.addEventListener('click', () => this.onSubmitButtonClick());
+                this.submitButtonEl.addEventListener('click', () =>
+                    this.onSubmitButtonClick()
+                );
             }
 
             /** Handles the submit button click */
@@ -66,6 +68,7 @@ define(['jquery', 'mage/translate'], function($) {
 
                 try {
                     const users = await this.fetchUsers();
+
                     if (users.length) {
                         this.renderUserList(users);
                     }
@@ -84,9 +87,12 @@ define(['jquery', 'mage/translate'], function($) {
                 const response = await fetch(this.apiUrl);
 
                 if (!response.ok) {
-                    throw new Error(`API responded with status ${response.status}`);
+                    throw new Error(
+                        `API responded with status ${response.status}`
+                    );
                 }
                 const result = await response.json();
+
                 return result.data || [];
             }
 
@@ -113,7 +119,12 @@ define(['jquery', 'mage/translate'], function($) {
              * @returns {HTMLElement} - formatted user list item
              */
             createUserElement(user) {
-                const { avatar, first_name: firstName, last_name: lastName, email } = user;
+                const {
+                    avatar,
+                    first_name: firstName,
+                    last_name: lastName,
+                    email
+                } = user;
                 const userEl = document.createElement('li');
 
                 userEl.classList.add('user');
