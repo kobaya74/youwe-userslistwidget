@@ -35,7 +35,7 @@ define(['jquery', 'mage/translate'], function($) {
             /** Handles the submit button click */
             async onSubmitButtonClick() {
                 if (this.usersFetched) {
-                    throw new Error($.mage.__('Users have already been added!'));
+                    throw new Error('Users have already been added!');
                 }
                 await this.fetchAndRenderUsers();
             }
@@ -70,7 +70,7 @@ define(['jquery', 'mage/translate'], function($) {
                         this.renderUserList(users);
                     }
                 } catch (error) {
-                    throw new Error($.mage.__(`Error fetching users: ${error.message}`));
+                    throw new Error(`Error fetching users: ${error.message}`);
                 } finally {
                     this.hideLoader(loader);
                 }
