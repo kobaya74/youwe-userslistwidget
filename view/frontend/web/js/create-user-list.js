@@ -35,7 +35,7 @@ define(['jquery', 'mage/translate'], function($) {
             /** Handles the submit button click */
             async onSubmitButtonClick() {
                 if (this.usersFetched) {
-                    throw new Error(($.mage.__('Users have already been added!'));
+                    throw new Error(($.mage.__('Users have already been added!')));
                 }
                 await this.fetchAndRenderUsers();
             }
